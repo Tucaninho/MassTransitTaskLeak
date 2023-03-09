@@ -12,7 +12,9 @@
         // if set to true,Server leaks tasks, if set to false server tasks are constant
         public const bool ChangeQueueEveryRequest = true;
 
-        public const string StaticQueueName = "MassTransitTaskLeakStaticQueue";
+        public const string QueueNamePrefix = "MassTransitTaskLeak-";
+
+        public static string StaticQueueName;
 
         private readonly Uri HostAddress;
 
@@ -26,6 +28,11 @@
 
         private bool _isDisposed;
 
+        static Helper()
+        {
+            StaticQueueName = GetQueueName();
+        }
+
         public Helper()
         {
             _isDisposed = false;
@@ -34,6 +41,11 @@
             HostAddress = new Uri("rabbitmq://localhost/");
             Username = "guest";
             Password = "guest";
+        }
+
+        public static string GetQueueName()
+        {
+            return QueueNamePrefix + Guid.NewGuid();
         }
 
         public async ValueTask DisposeAsync()
@@ -85,7 +97,17 @@
                     throw new ArgumentException($"Queue '{queueName}' already present", nameof(queueName));
                 }
 
-                HostReceiveEndpointHandle endpoint = _busControl.ConnectReceiveEndpoint(queueName, cfg => { cfg.Consumer(consumerType, consumerFactory); });
+                HostReceiveEndpointHandle endpoint = _busControl.ConnectReceiveEndpoint(
+                    queueName,
+                    cfg =>
+                        {
+                            var rmqCfg = (IRabbitMqReceiveEndpointConfigurator)cfg;
+                            rmqCfg.AutoDelete = true;
+                            rmqCfg.Durable = false;
+                            rmqCfg.PurgeOnStartup = true;
+
+                            cfg.Consumer(consumerType, consumerFactory);
+                        });
 
                 _endpoints[queueName] = endpoint;
 
@@ -117,9 +139,10 @@
         public async Task SendToAsync<T>(string queueName, T message)
             where T : class
         {
-            var uri = HostAddress + queueName;
+            var uri = HostAddress + queueName + "?temporary=true";
             var endpoint = await _busControl.GetSendEndpoint(new Uri(uri)).ConfigureAwait(false);
 
+            Console.WriteLine($"Sending '{typeof(T).Name}' to '{uri}'");
             await endpoint.Send(message).ConfigureAwait(false);
         }
     }

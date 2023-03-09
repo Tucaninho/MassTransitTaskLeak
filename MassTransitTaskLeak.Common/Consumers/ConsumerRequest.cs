@@ -1,5 +1,4 @@
-﻿// ReSharper disable All
-namespace MassTransitTaskLeak.Common.Consumers
+﻿namespace MassTransitTaskLeak.Common.Consumers
 {
     using System;
     using System.Threading;

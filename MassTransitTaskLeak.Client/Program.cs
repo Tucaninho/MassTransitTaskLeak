@@ -12,7 +12,7 @@
     {
         public static async Task Main()
         {
-            string queueName = Guid.NewGuid().ToString();
+            string queueName = Helper.GetQueueName();
             var helper = new Helper();
             await using (helper.ConfigureAwait(false))
             {
@@ -40,7 +40,7 @@
                                 {
                                     if (Helper.ChangeQueueEveryRequest)
                                     {
-                                        queueName = Guid.NewGuid().ToString();
+                                        queueName = Helper.GetQueueName();
                                     }
 
                                     await helper.AddQueueAsync(queueName, typeof(ConsumerResponse), _ => new ConsumerResponse()).ConfigureAwait(false);
