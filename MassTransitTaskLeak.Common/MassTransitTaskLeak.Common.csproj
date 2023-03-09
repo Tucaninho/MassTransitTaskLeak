@@ -5,11 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="log4net" Version="2.0.12" />
-    <PackageReference Include="MassTransit" Version="8.0.8" />
-    <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.8" />
-    <PackageReference Include="MassTransit.Newtonsoft" Version="8.0.8" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="MassTransit" Version="8.0.13" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.13" />
+    <PackageReference Include="MassTransit.Newtonsoft" Version="8.0.13" />
     <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
   </ItemGroup>
 
