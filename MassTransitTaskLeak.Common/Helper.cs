@@ -31,7 +31,7 @@
             _isDisposed = false;
             _endpoints = new Dictionary<string, HostReceiveEndpointHandle>();
 
-            HostAddress = new Uri("rabbitmq://localhost/test/");
+            HostAddress = new Uri("rabbitmq://localhost/");
             Username = "guest";
             Password = "guest";
         }
@@ -86,6 +86,7 @@
                 }
 
                 HostReceiveEndpointHandle endpoint = _busControl.ConnectReceiveEndpoint(queueName, cfg => { cfg.Consumer(consumerType, consumerFactory); });
+
                 _endpoints[queueName] = endpoint;
 
                 Console.WriteLine($"Adding queue '{queueName}' for consumer '{consumerType.Name}'");

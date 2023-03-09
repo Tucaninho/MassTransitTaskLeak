@@ -1,4 +1,4 @@
-﻿
+﻿// ReSharper disable All
 namespace MassTransitTaskLeak.Common.Consumers
 {
     using System;
