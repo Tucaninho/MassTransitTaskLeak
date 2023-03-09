@@ -30,7 +30,7 @@
 
         static Helper()
         {
-            StaticQueueName = GetQueueName();
+            StaticQueueName = QueueNamePrefix + "StaticQueue";
         }
 
         public Helper()

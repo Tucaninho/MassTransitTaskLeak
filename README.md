@@ -1,8 +1,8 @@
 # MassTransitTaskLeak
-When using SendTo to new queue names, the number of tasks grows pretty quickly
+When using SendTo to new queue names, the number of in process Tasks grows pretty quickly
 
 ## How to test it
-If Helper.ChangeQueueEveryRequest in MassTransitTaskLeak.Common project is set to true, the number of tasks in MassTransitTaskLeak.Server will quickly grow to over 1000 and the number of exchanges in RabbitMQ management will also grow
+If Helper.ChangeQueueEveryRequest in MassTransitTaskLeak.Common project is set to true, the number of tasks in MassTransitTaskLeak.Server will quickly grow to over 1000
 If it's set to false, the number of tasks in MassTransitTaskLeak.Server will stay low (around 100 on my machine)
 
 In order to reproduce the issue using Visual Studio, follow those steps:
